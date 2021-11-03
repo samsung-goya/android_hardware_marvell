@@ -106,20 +106,20 @@ union POWER_SD8XXX
 
 //Static paths and args
 // Path define for 8686
-static const char* WIFI_DRIVER_MODULE_8686_1_PATH = "/system/lib/modules/libertas.ko";
-static const char* WIFI_DRIVER_MODULE_8686_1_NAME = "libertas";
-static const char* WIFI_DRIVER_MODULE_8686_1_ARG =  "";
+//static const char* WIFI_DRIVER_MODULE_8686_1_PATH = "/system/lib/modules/libertas.ko";
+//static const char* WIFI_DRIVER_MODULE_8686_1_NAME = "libertas";
+//static const char* WIFI_DRIVER_MODULE_8686_1_ARG =  "";
 
-static const char* WIFI_DRIVER_MODULE_8686_2_PATH = "/system/lib/modules/libertas_sdio.ko";
-static const char* WIFI_DRIVER_MODULE_8686_2_NAME = "libertas_sdio";
+//static const char* WIFI_DRIVER_MODULE_8686_2_PATH = "/system/lib/modules/libertas_sdio.ko";
+//static const char* WIFI_DRIVER_MODULE_8686_2_NAME = "libertas_sdio";
 //5: DRV_MODE_STA|DRV_MODE_WIFIDIRECT,  4:STA_CFG80211_MASK
-static const char* WIFI_DRIVER_MODULE_8686_2_ARG =  "";
+//static const char* WIFI_DRIVER_MODULE_8686_2_ARG =  "";
 
 static const char* WIFI_DRIVER_MODULE_1_PATH = "/system/lib/modules/mlan.ko";
 static const char* WIFI_DRIVER_MODULE_1_NAME =     "mlan";
 static const char* WIFI_DRIVER_MODULE_1_ARG =      "";
 
-static const char* WIFI_DRIVER_MODULE_2_PATH = "/system/lib/modules/sd8787.ko";
+static const char* WIFI_DRIVER_MODULE_2_PATH = "/system/lib/modules/sd8xxx.ko";
 static const char* WIFI_DRIVER_MODULE_2_NAME =    "sd8xxx";
 //5: DRV_MODE_STA|DRV_MODE_WIFIDIRECT,  4:STA_CFG80211_MASK
 static const char* WIFI_DRIVER_MODULE_2_ARG =       "drv_mode=5 cfg80211_wext=12 sta_name=wlan wfd_name=p2p max_vir_bss=1";
@@ -632,25 +632,25 @@ int wifi_uap_enable(const char* driver_module_arg)
         }
     }
 
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == FALSE)
-    {
-        ret = insmod(WIFI_DRIVER_MODULE_8686_1_PATH, WIFI_DRIVER_MODULE_8686_1_ARG);
-        if (ret < 0)
-        {
-            ALOGD("wifi_uap_enable, insmod: %s %s fail", WIFI_DRIVER_MODULE_8686_1_PATH, WIFI_DRIVER_MODULE_8686_1_ARG);
-            goto out;
-        }
-    }
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == FALSE)
+    //{
+    //    ret = insmod(WIFI_DRIVER_MODULE_8686_1_PATH, WIFI_DRIVER_MODULE_8686_1_ARG);
+    //    if (ret < 0)
+    //   {
+    //        ALOGD("wifi_uap_enable, insmod: %s %s fail", WIFI_DRIVER_MODULE_8686_1_PATH, WIFI_DRIVER_MODULE_8686_1_ARG);
+    //        goto out;
+    //    }
+    //}
 
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == FALSE)
-    {
-        ret = insmod(WIFI_DRIVER_MODULE_8686_2_PATH, WIFI_DRIVER_MODULE_8686_2_ARG);
-        if (ret < 0)
-        {
-            ALOGD("wifi_uap_enable, insmod: %s %s fail", WIFI_DRIVER_MODULE_8686_2_PATH, arg_buf);
-            goto out;
-        }
-    }
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == FALSE)
+    //{
+    //   ret = insmod(WIFI_DRIVER_MODULE_8686_2_PATH, WIFI_DRIVER_MODULE_8686_2_ARG);
+    //    if (ret < 0)
+    //    {
+    //        ALOGD("wifi_uap_enable, insmod: %s %s fail", WIFI_DRIVER_MODULE_8686_2_PATH, arg_buf);
+    //        goto out;
+    //    }
+    //}
 
 out:
     return ret;
@@ -666,16 +666,16 @@ int wifi_uap_disable()
     {
         if (wifi_uap_force_poweroff() == 0)return ret;
     }
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == TRUE)
-    {
-        ret = rmmod (WIFI_DRIVER_MODULE_8686_2_NAME);
-        if (ret < 0) goto out;
-    }
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == TRUE)
-    {
-        ret = rmmod (WIFI_DRIVER_MODULE_8686_1_NAME);
-        if (ret < 0) goto out;
-    }
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == TRUE)
+    //{
+    //   ret = rmmod (WIFI_DRIVER_MODULE_8686_2_NAME);
+    //    if (ret < 0) goto out;
+    //}
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == TRUE)
+    //{
+    //    ret = rmmod (WIFI_DRIVER_MODULE_8686_1_NAME);
+    //    if (ret < 0) goto out;
+    //}
      if(check_driver_loaded(WIFI_DRIVER_MODULE_2_NAME) == TRUE)
     {
         ret = rmmod (WIFI_DRIVER_MODULE_2_NAME);
@@ -792,18 +792,18 @@ int wifi_uap_force_poweroff() {
     if(ret != 0) {
         ALOGE("---------system /system/bin/rfkill block all, ret: 0x%x, strerror: %s", ret, strerror(errno));
     }
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == TRUE)
-    {
-        ret = rmmod (WIFI_DRIVER_MODULE_8686_2_NAME);
-        if (ret < 0)
-            ALOGE("Fail to rmmod[%s], ret = %d", WIFI_DRIVER_MODULE_8686_2_NAME, ret);
-    }
-    if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == TRUE)
-    {
-        ret = rmmod (WIFI_DRIVER_MODULE_8686_1_NAME);
-        if (ret < 0)
-            ALOGE("Fail to rmmod[%s], ret = %d", WIFI_DRIVER_MODULE_8686_1_NAME, ret);
-    }
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_2_NAME) == TRUE)
+    //{
+    //    ret = rmmod (WIFI_DRIVER_MODULE_8686_2_NAME);
+    //    if (ret < 0)
+    //        ALOGE("Fail to rmmod[%s], ret = %d", WIFI_DRIVER_MODULE_8686_2_NAME, ret);
+    //}
+    //if(check_driver_loaded(WIFI_DRIVER_MODULE_8686_1_NAME) == TRUE)
+    //{
+    //    ret = rmmod (WIFI_DRIVER_MODULE_8686_1_NAME);
+    //    if (ret < 0)
+    //        ALOGE("Fail to rmmod[%s], ret = %d", WIFI_DRIVER_MODULE_8686_1_NAME, ret);
+    //}
 
     if(check_driver_loaded(WIFI_DRIVER_MODULE_2_NAME) == TRUE)
     {
