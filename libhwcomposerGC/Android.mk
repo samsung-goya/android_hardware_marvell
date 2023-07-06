@@ -45,8 +45,9 @@ LOCAL_SHARED_LIBRARIES := \
         libcutils \
         libEGL \
         libbinder \
-#        libGAL \
         libsync \
+        #libGAL \
+
 
 LOCAL_MODULE := libHWComposerGC
 
